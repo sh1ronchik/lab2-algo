@@ -137,18 +137,17 @@ def read_rectangles_from_file(file_path: str) -> List[Rectangle]:
                 rectangles.append(Rectangle(x1, y1, x2, y2))
     return rectangles
 
-def read_points_from_file(file_path: str) -> List[tuple]:
-    points = []
-    with open(file_path, 'r') as file:
-        for line in file:
-            if line.strip():
-                x, y = map(float, line.split())
-                points.append((x, y))
-    return points
+
 
 if __name__ == "__main__":
-    rectangles = read_rectangles_from_file('rectangles.txt')
-    test_points = read_points_from_file('points.txt')
+    rectangles = [
+        Rectangle(2, 2, 6, 8),
+        Rectangle(5, 4, 9, 10),
+        Rectangle(4, 0, 11, 6),
+        Rectangle(8, 2, 12, 12)
+    ]
+
+    test_points = [(2, 2), (12, 12), (10, 4), (5, 5), (2, 10), (2, 8)]
 
     points_x = sorted(set(rec.x1 for rec in rectangles) | set(rec.x2 for rec in rectangles))
     points_y = sorted(set(rec.y1 for rec in rectangles) | set(rec.y2 for rec in rectangles))
