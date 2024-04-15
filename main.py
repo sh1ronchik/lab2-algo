@@ -1,50 +1,6 @@
 from typing import List
-
-class Rectangle:
-    def __init__(self, x1: float, y1: float, x2: float, y2: float) -> None:
-        self.x1 = x1
-        self.y1 = y1
-        self.x2 = x2
-        self.y2 = y2
-
-    def contains(self, x: float, y: float) -> bool:
-        return self.x1 <= x < self.x2 and self.y1 <= y < self.y2
-
-class Node:
-    def __init__(self, left=None, right=None):
-        self.left_border, self.right_border = left, right
-        self.left_child, self.right_child = None, None
-        self.value = 0
-
-def create_tree(left, right):
-    node = Node(left, right)
-    if left + 1 < right:
-        mid = (right + left) // 2
-        node.left_child = create_tree(left, mid)
-        node.right_child = create_tree(mid, right)
-    return node
-
-def copy_without_children(node):
-    new_node = Node(node.left_border, node.right_border)
-    new_node.value = node.value
-    return new_node
-
-def copy_of_node(node, v):
-    new_node = Node(node.left_border, node.right_border)
-    new_node.value = node.value + v
-    new_node.left_child = node.left_child
-    new_node.right_child = node.right_child
-    return new_node
-
-def change_tree(node, left, right, value):
-    if left <= node.left_border and node.right_border <= right:
-        return copy_of_node(node, value)
-    if right <= node.left_border or node.right_border <= left:
-        return node
-    new_node = copy_without_children(node)
-    new_node.left_child = change_tree(node.left_child, left, right, value)
-    new_node.right_child = change_tree(node.right_child, left, right, value)
-    return new_node
+from rectangle import Rectangle
+from tree import Tree
 
 def preprocessing(rectangles):
     points_x, points_y = set(), set()
@@ -63,7 +19,8 @@ def preprocessing(rectangles):
     points_y.sort()
     mas_x_changes = sorted(mas_x_changes, key=lambda x: x[0])
 
-    tree = create_tree(0, len(points_x) - 1)
+    tree_instance = Tree()
+    tree = tree_instance.create_tree(0, len(points_x) - 1)
     persistent_trees = [tree]
     new_tree = None
 
@@ -74,23 +31,18 @@ def preprocessing(rectangles):
             pref = mas_x_changes[ind][0]
 
         while ind != len(mas_x_changes) and pref == mas_x_changes[ind][0]:
-            new_tree = change_tree(persistent_trees[-1] if not new_tree else new_tree,
-                                   points_x.index(mas_x_changes[ind][1]), points_x.index(mas_x_changes[ind][2]),
-                                   mas_x_changes[ind][3])
+            new_tree = tree_instance.change_tree(persistent_trees[-1] if not new_tree else new_tree,
+                                                 points_x.index(mas_x_changes[ind][1]), points_x.index(mas_x_changes[ind][2]),
+                                                 mas_x_changes[ind][3])
             ind += 1
 
     persistent_trees.append(tree)
     return persistent_trees, points_x, points_y
 
-def find(node, target):
-    if not node.right_child and not node.left_child:
-        return node.value
-    mid = (node.right_border + node.left_border) // 2
-    if target < mid:
-        return node.value + find(node.left_child, target)
-    return node.value + find(node.right_child, target)
 
 def algorithm(points, persistent_trees, points_x, points_y):
+    tree_instance = Tree()
+    
     for x, y in points:
         compressed_x = bin_search(points_x, x)
         compressed_y = bin_search(points_y, y)
@@ -98,7 +50,7 @@ def algorithm(points, persistent_trees, points_x, points_y):
         if compressed_x == -1 or compressed_y == -1:
             print(0, end=" ")
         else:
-            print(find(persistent_trees[compressed_y + 1], compressed_x), end=" ")
+            print(tree_instance.find(persistent_trees[compressed_y + 1], compressed_x), end=" ")
 
 def bin_search(mass: List[float], target: float) -> int:
     if target < mass[0] or target >= mass[-1]:
@@ -174,6 +126,8 @@ if __name__ == "__main__":
     for point, result in map_algorithm_results:
         print(f"({point[0]}, {point[1]}) -> {result}")
 
+    tree_instance = Tree()
+
     persistent_tree_results = []
     for point in test_points:
         compressed_x = bin_search(points_x, point[0])
@@ -182,7 +136,7 @@ if __name__ == "__main__":
         if compressed_x == -1 or compressed_y == -1:
             result = 0
         else:
-            result = find(persistent_trees[compressed_y + 1], compressed_x)
+            result = tree_instance.find(persistent_trees[compressed_y + 1], compressed_x)
         persistent_tree_results.append((point, result))
 
     print("\nPersistent Tree Algorithm:")
