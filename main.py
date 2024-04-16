@@ -1,8 +1,8 @@
-from typing import List
 from rectangle import Rectangle
 from tree import Tree
-from algorithms import BruteForceFind
-    
+from find_algorithms import BruteForceFind, MapFind
+from bin_search import bin_search
+
 def preprocessing(rectangles):
     points_x, points_y = set(), set()
     mas_x_changes = []
@@ -53,40 +53,6 @@ def algorithm(points, persistent_trees, points_x, points_y):
         else:
             print(tree_instance.find(persistent_trees[compressed_y + 1], compressed_x), end=" ")
 
-def bin_search(mass: List[float], target: float) -> int:
-    if target < mass[0] or target >= mass[-1]:
-        return -1
-    left, right = 0, len(mass)
-    while right - left > 1:
-        mid = (right + left) // 2
-        mid_value = mass[mid]
-        left = mid if mid_value <= target else left
-        right = mid if mid_value > target else right
-    return left
-
-def prepare_map(rectangles: List[Rectangle], points_x: List[float], points_y: List[float]) -> List[List[int]]:
-    c_map = [[0] * (len(points_x) - 1) for _ in range(len(points_y) - 1)]
-    for rec in rectangles:
-        compressed_x1, compressed_x2 = map(points_x.index, [rec.x1, rec.x2])
-        compressed_y1, compressed_y2 = map(points_y.index, [rec.y1, rec.y2])
-        for x in range(compressed_x1, compressed_x2):
-            for y in range(compressed_y1, compressed_y2):
-                c_map[len(points_y) - 2 - y][x] += 1
-    return c_map
-
-def count_rects_with_point_map(c_map: List[List[int]], points_x: List[float], points_y: List[float], x: float, y: float) -> int:
-    compressed_x, compressed_y = bin_search(points_x, x), bin_search(points_y, y)
-    return 0 if compressed_x == -1 or compressed_y == -1 else c_map[len(points_y) - 2 - compressed_y][compressed_x]
-
-def read_rectangles_from_file(file_path: str) -> List[Rectangle]:
-    rectangles = []
-    with open(file_path, 'r') as file:
-        for line in file:
-            if line.strip():
-                x1, y1, x2, y2 = map(float, line.split())
-                rectangles.append(Rectangle(x1, y1, x2, y2))
-    return rectangles
-
 
 
 if __name__ == "__main__":
@@ -102,25 +68,20 @@ if __name__ == "__main__":
     points_x = sorted(set(rec.x1 for rec in rectangles) | set(rec.x2 for rec in rectangles))
     points_y = sorted(set(rec.y1 for rec in rectangles) | set(rec.y2 for rec in rectangles))
 
-    persistent_trees, points_x, points_y = preprocessing(rectangles)
-
-    c_map = prepare_map(rectangles, points_x, points_y)
-
-    print("\nBrute Force:")
+    print("\nBrute Force:\n")
     for point in test_points:
         result = BruteForceFind.count_rects_with_point_brute(rectangles, *point)
         print(f"({point[0]}, {point[1]}) -> {result}")
 
-    map_algorithm_results = []
-    for point in test_points:
-        result = count_rects_with_point_map(c_map, points_x, points_y, *point)
-        map_algorithm_results.append((point, result))
+    c_map = MapFind.prepare_map(rectangles, points_x, points_y)
 
-    print("\nMap Algorithm:")
-    for point, result in map_algorithm_results:
+    print("\nMap Algorithm:\n")
+    for point in test_points:
+        result = MapFind.count_rects_with_point_map(c_map, points_x, points_y, *point)
         print(f"({point[0]}, {point[1]}) -> {result}")
 
     tree_instance = Tree()
+    persistent_trees, points_x, points_y = preprocessing(rectangles)
 
     persistent_tree_results = []
     for point in test_points:
@@ -133,6 +94,6 @@ if __name__ == "__main__":
             result = tree_instance.find(persistent_trees[compressed_y + 1], compressed_x)
         persistent_tree_results.append((point, result))
 
-    print("\nPersistent Tree Algorithm:")
+    print("\nPersistent Tree Algorithm:\n")
     for point, result in persistent_tree_results:
         print(f"({point[0]}, {point[1]}) -> {result}")
