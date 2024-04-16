@@ -2,6 +2,7 @@ from typing import List
 from rectangle import Rectangle
 from bin_search import bin_search
 from tree import Tree
+from point import Point
 
 class BruteForceFind:
 
@@ -39,29 +40,32 @@ class MapFind:
         return c_map
 
     @staticmethod
-    def count_rects_with_point_map(c_map: List[List[int]], points_x: List[float], points_y: List[float], x: float, y: float) -> int:
+    def count_rects_with_point_map(c_map: List[List[int]], points_x: List[float], points_y: List[float], point: Point) -> int:
         """
         Counts the number of rectangles containing the given point using the prepared map.
 
         :param c_map: The prepared map.
         :param points_x: A sorted list of x-coordinates.
         :param points_y: A sorted list of y-coordinates.
-        :param x: The x-coordinate of the point.
-        :param y: The y-coordinate of the point.
+        :param point: The point to check.
         :return: The number of rectangles containing the point.
         """
-        compressed_x, compressed_y = bin_search(points_x, x), bin_search(points_y, y)
+        compressed_x, compressed_y = bin_search(points_x, point.x), bin_search(points_y, point.y)
         return 0 if compressed_x == -1 or compressed_y == -1 else c_map[len(points_y) - 2 - compressed_y][compressed_x]
 
-class TreeFind:
+from typing import List
+from tree import Tree
+from point import Point
 
+class TreeFind:
+    
     @staticmethod
-    def preprocessing(rectangles):
+    def preprocessing(rectangles: List[Rectangle]) -> tuple[List[Tree], List[float], List[float]]:
         """
         Preprocesses the rectangles to prepare for efficient point containment queries.
 
         :param rectangles: A list of Rectangle objects.
-        :return: A list of persistent trees and the sorted x and y coordinates.
+        :return: A tuple containing a list of persistent trees, and the sorted x and y coordinates.
         """
         tree_instance = Tree()
         points_x, points_y = set(), set()
@@ -100,17 +104,19 @@ class TreeFind:
         return persistent_trees, points_x, points_y
 
     @staticmethod
-    def algorithm(points, persistent_trees, points_x, points_y):
+    def algorithm(test_points: List[Point], persistent_trees: List[Tree], points_x: List[float], points_y: List[float]) -> None:
         """
         Counts the number of rectangles containing each point using the persistent trees.
 
-        :param points: A list of points to check.
+        :param test_points: A list of Point objects to check.
         :param persistent_trees: A list of persistent trees.
         :param points_x: A sorted list of x-coordinates.
         :param points_y: A sorted list of y-coordinates.
         """
         tree_instance = Tree()
-        for x, y in points:
+        for point in test_points:
+            x = point.x
+            y = point.y
             compressed_x = bin_search(points_x, x)
             compressed_y = bin_search(points_y, y)
 
