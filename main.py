@@ -1,7 +1,8 @@
 from typing import List
 from rectangle import Rectangle
 from tree import Tree
-
+from algorithms import BruteForceFind
+    
 def preprocessing(rectangles):
     points_x, points_y = set(), set()
     mas_x_changes = []
@@ -77,9 +78,6 @@ def count_rects_with_point_map(c_map: List[List[int]], points_x: List[float], po
     compressed_x, compressed_y = bin_search(points_x, x), bin_search(points_y, y)
     return 0 if compressed_x == -1 or compressed_y == -1 else c_map[len(points_y) - 2 - compressed_y][compressed_x]
 
-def count_rects_with_point_brute(rectangles: List[Rectangle], x: float, y: float) -> int:
-    return sum(1 for rec in rectangles if rec.contains(x, y))
-
 def read_rectangles_from_file(file_path: str) -> List[Rectangle]:
     rectangles = []
     with open(file_path, 'r') as file:
@@ -108,13 +106,9 @@ if __name__ == "__main__":
 
     c_map = prepare_map(rectangles, points_x, points_y)
 
-    brute_force_results = []
-    for point in test_points:
-        result = count_rects_with_point_brute(rectangles, *point)
-        brute_force_results.append((point, result))
-
     print("\nBrute Force:")
-    for point, result in brute_force_results:
+    for point in test_points:
+        result = BruteForceFind.count_rects_with_point_brute(rectangles, *point)
         print(f"({point[0]}, {point[1]}) -> {result}")
 
     map_algorithm_results = []
