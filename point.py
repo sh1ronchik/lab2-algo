@@ -1,6 +1,6 @@
 class Point:
-
-    def __init__(self, x, y):
+    
+    def __init__(self, x: float, y: float) -> None:
         """
         Initializes a Point instance with the given x and y coordinates.
 
@@ -10,7 +10,7 @@ class Point:
         self.x = x
         self.y = y
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         """
         Returns a string representation of the Point instance.
 

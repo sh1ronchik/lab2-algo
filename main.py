@@ -3,6 +3,7 @@ from find_algorithms import BruteForceFind, MapFind, TreeFind
 from point import Point
 
 if __name__ == "__main__":
+    
     rectangles = [
         Rectangle(2, 2, 6, 8),
         Rectangle(5, 4, 9, 10),
