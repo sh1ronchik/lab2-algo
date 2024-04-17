@@ -124,5 +124,3 @@ class TreeFind:
                 result = 0
             else:
                 result = tree_instance.find(persistent_trees[compressed_y + 1], compressed_x)
-            
-            print(f"({x}, {y}) -> {result}")

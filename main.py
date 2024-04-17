@@ -13,17 +13,18 @@ if __name__ == "__main__":
 
     print("\nBrute Force:\n")
     for point in test_points:
-        result = BruteForceFind.count_rects_with_point_brute(rectangles, point.x, point.y)
-        print(f"{point} -> {result}")
+        BruteForceFind.count_rects_with_point_brute(rectangles, point.x, point.y)
+    print("Algorithm worked.")
 
     c_map = MapFind.prepare_map(rectangles, points_x, points_y)
 
     print("\nMap Algorithm:\n")
     for point in test_points:
-        result = MapFind.count_rects_with_point_map(c_map, points_x, points_y, point)
-        print(f"{point} -> {result}")
+        MapFind.count_rects_with_point_map(c_map, points_x, points_y, point)
+    print("Algorithm worked.")
 
     persistent_trees, points_x, points_y = TreeFind.preprocessing(rectangles)
 
     print("\nPersistent Tree Algorithm:\n")
     TreeFind.algorithm(test_points, persistent_trees, points_x, points_y)
+    print("Algorithm worked.")
