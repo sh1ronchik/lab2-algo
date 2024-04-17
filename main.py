@@ -1,14 +1,12 @@
-from rectangle import Rectangle
 from find_algorithms import BruteForceFind, MapFind, TreeFind
-from point import Point
-from input_data import InputData # Import the InputData class
+from input_data import InputData 
 
 if __name__ == "__main__":
     points_file_path = 'points.txt'
     rectangles_file_path = 'rectangles.txt'
 
-    test_points = InputData.read_points(points_file_path) # Use the method from InputData
-    rectangles = InputData.read_rectangles(rectangles_file_path) # Use the method from InputData
+    test_points = InputData.read_points(points_file_path) 
+    rectangles = InputData.read_rectangles(rectangles_file_path) 
 
     points_x = sorted(set(rec.x1 for rec in rectangles) | set(rec.x2 for rec in rectangles))
     points_y = sorted(set(rec.y1 for rec in rectangles) | set(rec.y2 for rec in rectangles))
