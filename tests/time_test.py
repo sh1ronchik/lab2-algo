@@ -1,5 +1,5 @@
 from time import perf_counter
-from algorithms.find import lin_search, map, tree
+from algorithms.find import lin_search, map_alg, tree_alg
 
 class AlgorithmTester:
     def __init__(self, data_generator):
@@ -34,7 +34,7 @@ class AlgorithmTester:
             time_prep_sum = 0
             time_answer_sum = 0
             begin = perf_counter()
-            map_algorithm = map.MapAlgorithm("data/rectangles.txt", "data/points.txt")
+            map_algorithm = map_alg.MapAlgorithm("data/rectangles.txt", "data/points.txt")
             map_algorithm.preprocessing()
             time_prep_sum += perf_counter() - begin
             begin = perf_counter()
@@ -51,7 +51,7 @@ class AlgorithmTester:
 
     def test_tree_alg_prep_and_run(self):
         data = []
-        tree_algorithm = tree.TreeAlgorithm() 
+        tree_algorithm = tree_alg.TreeAlgorithm() 
         for i in range(3):
             self.data_generator.create_rectangles(2 ** i)
             time_prep_sum = 0
