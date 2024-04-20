@@ -5,6 +5,9 @@ if __name__ == "__main__":
     points_file_path = 'points.txt'
     rectangles_file_path = 'rectangles.txt'
 
+    InputData.create_rectangles(2**9)
+    InputData.create_points(100000)
+
     test_points = InputData.read_points(points_file_path) 
     rectangles = InputData.read_rectangles(rectangles_file_path) 
 
