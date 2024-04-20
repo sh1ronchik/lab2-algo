@@ -18,15 +18,15 @@ if __name__ == "__main__":
     print("\nBrute Force:\n")
     start_time = time.time()
     for point in test_points:
-        BruteForceFind.count_rects_with_point_brute(rectangles, point.x, point.y)
+        BruteForceFind.algorithm(rectangles, point.x, point.y)
     end_time = time.time()
     print(f"Algorithm worked. Time taken: {end_time - start_time} seconds.")
 
     print("\nMap Algorithm:\n")
     start_time = time.time()
-    c_map = MapFind.prepare_map(rectangles, points_x, points_y)
+    c_map = MapFind.prepairing(rectangles, points_x, points_y)
     for point in test_points:
-        MapFind.count_rects_with_point_map(c_map, points_x, points_y, point)
+        MapFind.algorithm(c_map, points_x, points_y, point)
     end_time = time.time()
     print(f"Algorithm worked. Time taken: {end_time - start_time} seconds.")
 

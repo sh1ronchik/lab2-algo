@@ -7,7 +7,7 @@ from point import Point
 class BruteForceFind:
 
     @staticmethod
-    def count_rects_with_point_brute(rectangles: List[Rectangle], x: float, y: float) -> int:
+    def algorithm(rectangles: List[Rectangle], x: float, y: float) -> int:
         """
         Counts the number of rectangles that contain the given point using a brute force approach.
 
@@ -21,7 +21,7 @@ class BruteForceFind:
 class MapFind:
 
     @staticmethod
-    def prepare_map(rectangles: List[Rectangle], points_x: List[float], points_y: List[float]) -> List[List[int]]:
+    def prepairing(rectangles: List[Rectangle], points_x: List[float], points_y: List[float]) -> List[List[int]]:
         """
         Prepares a map for efficient point containment queries.
 
@@ -43,7 +43,7 @@ class MapFind:
         return c_map
 
     @staticmethod
-    def count_rects_with_point_map(c_map: List[List[int]], points_x: List[float], points_y: List[float], point: Point) -> int:
+    def algorithm(c_map: List[List[int]], points_x: List[float], points_y: List[float], point: Point) -> int:
         """
         Counts the number of rectangles containing the given point using the prepared map.
 
@@ -63,7 +63,7 @@ from point import Point
 class TreeFind:
     
     @staticmethod
-    def preprocessing(rectangles: List[Rectangle]) -> tuple[List[Tree], List[float], List[float]]:
+    def prepairing(rectangles: List[Rectangle]) -> tuple[List[Tree], List[float], List[float]]:
         """
         Preprocesses the rectangles to prepare for efficient point containment queries.
 
