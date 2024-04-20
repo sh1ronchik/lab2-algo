@@ -30,13 +30,16 @@ class MapFind:
         :param points_y: A sorted list of y-coordinates.
         :return: A 2D list representing the map.
         """
-        c_map = [[0] * (len(points_x) - 1) for _ in range(len(points_y) - 1)]
+        points_x = sorted(set(points_x) | set(rec.x1 for rec in rectangles) | set(rec.x2 for rec in rectangles))
+        points_y = sorted(set(points_y) | set(rec.y1 for rec in rectangles) | set(rec.y2 for rec in rectangles))
+
+        c_map = [[0] * len(points_x) for _ in range(len(points_y))]
         for rec in rectangles:
             compressed_x1, compressed_x2 = map(points_x.index, [rec.x1, rec.x2])
             compressed_y1, compressed_y2 = map(points_y.index, [rec.y1, rec.y2])
             for x in range(compressed_x1, compressed_x2):
                 for y in range(compressed_y1, compressed_y2):
-                    c_map[len(points_y) - 2 - y][x] += 1
+                    c_map[y][x] += 1
         return c_map
 
     @staticmethod
