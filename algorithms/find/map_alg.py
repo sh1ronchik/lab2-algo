@@ -20,26 +20,19 @@ class MapAlgorithm:
                 left = mid
         return left
 
-    def read_rectangles(self):
-        with open(self.rectangles_file_path, "r") as rec_file:
-            self.rectangles = [[int(x) for x in rec_file.readline().split()] for _ in range(len(self.rectangles))]
-
-    def read_points(self):
-        with open(self.points_file_path, "r") as points_file:
-            self.points = [[int(x) for x in points_file.readline().split()] for _ in range(len(self.points))]
+    def read_data(self, file_path):
+        with open(file_path, "r") as file:
+            return [[int(x) for x in file.readline().split()] for _ in range(len(file))]
 
     def preprocessing(self):
-        self.read_rectangles()
-        self.read_points()
+        self.rectangles = self.read_data(self.rectangles_file_path)
+        self.points = self.read_data(self.points_file_path)
         self.points_x, self.points_y = list(set(point[0] for point in self.points)), list(set(point[1] for point in self.points))
         self.points_x.sort()
         self.points_y.sort()
         self.c_map = [[0] * (len(self.points_x) - 1) for _ in range(len(self.points_y) - 1)]
         for rec in self.rectangles:
-            compressed_x1 = self.points_x.index(rec[0])
-            compressed_y1 = self.points_y.index(rec[1])
-            compressed_x2 = self.points_x.index(rec[2])
-            compressed_y2 = self.points_y.index(rec[3])
+            compressed_x1, compressed_y1, compressed_x2, compressed_y2 = [self.points_x.index(rec[i]) for i in range(4)]
             for x in range(compressed_x1, compressed_x2):
                 for y in range(compressed_y1, compressed_y2):
                     self.c_map[len(self.points_y) - 2 - y][x] += 1
@@ -48,4 +41,5 @@ class MapAlgorithm:
         for point in self.points:
             compressed_x = self.bin_search(self.points_x, point[0])
             compressed_y = self.bin_search(self.points_y, point[1])
-            c = 0 if compressed_x == -1 or compressed_y == -1 else self.c_map[len(self.points_y) - 2 - compressed_y][compressed_x]
+            if compressed_x != -1 and compressed_y != -1:
+                c = self.c_map[len(self.points_y) - 2 - compressed_y][compressed_x]
