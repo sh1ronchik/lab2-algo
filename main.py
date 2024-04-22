@@ -8,8 +8,8 @@ def main():
     csv_writer = csv.CSVWriter()
 
     data = []
-    # data.extend(algorithm_tester.test_lin_alg())
-    # data.extend(algorithm_tester.test_map_alg_prep_and_run())
+    data.extend(algorithm_tester.test_lin_alg())
+    data.extend(algorithm_tester.test_map_alg_prep_and_run())
     data.extend(algorithm_tester.test_tree_alg_prep_and_run())
 
     csv_writer.write_to_csv(data)

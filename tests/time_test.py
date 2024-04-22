@@ -52,7 +52,7 @@ class AlgorithmTester:
     def test_tree_alg_prep_and_run(self):
         data = []
         tree_algorithm = tree_alg.TreeAlgorithm() 
-        for i in range(3):
+        for i in range(13):
             self.data_generator.create_rectangles(2 ** i)
             time_prep_sum = 0
             time_answer_sum = 0
