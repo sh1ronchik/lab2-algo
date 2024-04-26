@@ -1,6 +1,6 @@
 from algorithms.dataIO import data_gen
 from algorithms.dataIO import csv
-from tests import time_test
+from tests.test import time_test
 
 def main():
     data_generator = data_gen.DataGenerator()
