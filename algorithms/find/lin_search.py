@@ -7,7 +7,8 @@ class LinearSearch:
 
     def read_file(self, file_path):
         with open(file_path, "r") as file:
-            return [[int(x) for x in line.split()] for line in file]
+            lines = file.readlines()
+            return [[int(x) for x in line.split()] for line in lines]
 
     def read_rectangles(self):
         self.rectangles = self.read_file(self.rectangles_file_path)

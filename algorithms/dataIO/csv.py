@@ -1,8 +1,13 @@
 import csv
 
 class CSVWriter:
+    def __init__(self):
+        pass
+
     def write_to_csv(self, data):
         with open('data.csv', 'w', newline='') as csvfile:
-            writer = csv.DictWriter(csvfile, fieldnames=['rectangles', 'time_prep', 'time_answer', 'time_total', 'alg'])
+            fieldnames = ['rectangles', 'time_prep', 'time_answer', 'time_total', 'alg']
+            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
             writer.writeheader()
-            writer.writerows(data)
+            for row in data:
+                writer.writerow(row)
