@@ -23,4 +23,5 @@ class LinearSearch:
         self.read_rectangles()
         self.read_points()
         for point in self.points:
-            counter = sum(1 for rectangle in self.rectangles if rectangle[0] <= point[0] < rectangle[2] and rectangle[1] <= point[1] < rectangle[3])
+            counter = sum(1 for rectangle in self.rectangles if rectangle[0] <= point[0] < rectangle[2] \
+                          and rectangle[1] <= point[1] < rectangle[3])
