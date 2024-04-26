@@ -31,7 +31,8 @@ class MapAlgorithm:
     def preprocessing(self):
         self.read_rectangles()
         self.read_points()
-        self.points_x, self.points_y = list(set(point[0] for point in self.points)), list(set(point[1] for point in self.points))
+        self.points_x, self.points_y = list(set(point[0] for point in self.points)), \
+                                        list(set(point[1] for point in self.points))
         self.points_x.sort()
         self.points_y.sort()
         self.c_map = [[0] * (len(self.points_x) - 1) for _ in range(len(self.points_y) - 1)]
@@ -48,4 +49,5 @@ class MapAlgorithm:
         for point in self.points:
             compressed_x = self.bin_search(self.points_x, point[0])
             compressed_y = self.bin_search(self.points_y, point[1])
-            c = 0 if compressed_x == -1 or compressed_y == -1 else self.c_map[len(self.points_y) - 2 - compressed_y][compressed_x]
+            c = 0 if compressed_x == -1 or compressed_y == -1 \
+                  else self.c_map[len(self.points_y) - 2 - compressed_y][compressed_x]
